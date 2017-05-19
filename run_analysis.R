@@ -52,7 +52,7 @@ extract <- data[, c("subject", "activity", grep("(mean|std)[(]{1}", names(data),
 ##
 
 activities <- fread("./activity_labels.txt")
-extract[, activity := factor(activity, activities, labels = activities$V2)]
+extract[, activity := factor(activity, activities$V1, labels = activities$V2)]
 
 
 ##
@@ -85,3 +85,4 @@ setnames(tidy, names(tidy)[3:NROW(names(tidy))],
          paste0(names(tidy)[3:NROW(names(tidy))], "Avg"))
 
 # Done! Keep using the tidy object for further analysis...
+# write.table(tidy, file = "./tidy.txt", row.names = FALSE)
