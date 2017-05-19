@@ -30,3 +30,97 @@ extracted, and the contents from the *UCI HAR Dataset* moved to the working dire
 ## Transformations in Step 2: Extract mean and standard deviation measurements
 
 I subset the `data` object to retrieve only the columns with the headings `subject` and `activity` as well as all columns who have `mean` or `std` in the column name followed by a `(`.
+
+## Transformations in Step 3: Use descriptive activity names
+
+Activities are logged by their ids. To get descriptive activity names I read the respective labels from *activity_labels.txt* and factorized the `activity` column.
+
+## Transformations in Step 4: Appropriately label the data set with descriptive variable names
+
+The variables are already descriptive because they were labeled in Step 2. Here I just removed the characters `()-` from the variable names so they are easier to read. The first letters of the substrings `mean` and `std` needed to be capitalized.
+
+I explicitly don't want to have the variable names in lowercase (as the course materials suggested) because the capital letters give structure to the variable names. They are much easier to read this way.
+
+## Transformations in Step 5: create a tidy data set with the average of each variable for each activity and each subject
+
+For the `tidy` data set I needed to group the data by subject and activity, which for a `data.table` object can easily be achieved with `by = c("subject", "activity)`. Then I have to iterate over each column and calculate the mean for the stored data. `.SD` is a `data.table` containing the subset of data for each group, so I can simply call `lapply(.SD, mean)`.
+
+I still have the "old" variable names. To clarify I calculated the average over the original data I also added `Avg` to all headers starting from column 3.
+
+I chose a *wide* format for the tidy data set. There is no missing data, so there is also no benefit in converting the data to a *long* format.
+
+## Result
+
+The result of all transformations is a tidy data set with the following columns.
+
+* subject - the subject id of type `integer`
+* activity - the activity id of type `factor` with 6 levels *walking, walking_upstairs, walking_downstairs, sitting, standing, laying*
+
+The averages of mean and standard deviation measures from the studies of type `numeric`:
+
+* tBodyAccMeanXAvg
+* tBodyAccMeanYAvg
+* tBodyAccMeanZAvg
+* tBodyAccStdXAvg
+* tBodyAccStdYAvg
+* tBodyAccStdZAvg
+* tGravityAccMeanXAvg
+* tGravityAccMeanYAvg
+* tGravityAccMeanZAvg
+* tGravityAccStdXAvg
+* tGravityAccStdYAvg
+* tGravityAccStdZAvg
+* tBodyAccJerkMeanXAvg
+* tBodyAccJerkMeanYAvg
+* tBodyAccJerkMeanZAvg
+* tBodyAccJerkStdXAvg
+* tBodyAccJerkStdYAvg
+* tBodyAccJerkStdZAvg
+* tBodyGyroMeanXAvg
+* tBodyGyroMeanYAvg
+* tBodyGyroMeanZAvg
+* tBodyGyroStdXAvg
+* tBodyGyroStdYAvg           
+* tBodyGyroStdZAvg
+* tBodyGyroJerkMeanXAvg
+* tBodyGyroJerkMeanYAvg
+* tBodyGyroJerkMeanZAvg
+* tBodyGyroJerkStdXAvg       
+* tBodyGyroJerkStdYAvg
+* tBodyGyroJerkStdZAvg
+* tBodyAccMagMeanAvg
+* tBodyAccMagStdAvg
+* tGravityAccMagMeanAvg
+* tGravityAccMagStdAvg
+* tBodyAccJerkMagMeanAvg
+* tBodyAccJerkMagStdAvg
+* tBodyGyroMagMeanAvg
+* tBodyGyroMagStdAvg
+* tBodyGyroJerkMagMeanAvg
+* tBodyGyroJerkMagStdAvg
+* fBodyAccMeanXAvg
+* fBodyAccMeanYAvg
+* fBodyAccMeanZAvg           
+* fBodyAccStdXAvg
+* fBodyAccStdYAvg
+* fBodyAccStdZAvg
+* fBodyAccJerkMeanXAvg
+* fBodyAccJerkMeanYAvg       
+* fBodyAccJerkMeanZAvg
+* fBodyAccJerkStdXAvg
+* fBodyAccJerkStdYAvg
+* fBodyAccJerkStdZAvg
+* fBodyGyroMeanXAvg
+* fBodyGyroMeanYAvg
+* fBodyGyroMeanZAvg
+* fBodyGyroStdXAvg
+* fBodyGyroStdYAvg
+* fBodyGyroStdZAvg
+* fBodyAccMagMeanAvg
+* fBodyAccMagStdAvg
+* fBodyBodyAccJerkMagMeanAvg
+* fBodyBodyAccJerkMagStdAvg
+* fBodyBodyGyroMagMeanAvg
+* fBodyBodyGyroMagStdAvg
+* fBodyBodyGyroJerkMagMeanAvg
+* fBodyBodyGyroJerkMagStdAvg
