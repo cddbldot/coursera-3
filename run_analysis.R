@@ -83,3 +83,5 @@ tidy <- extract[, lapply(.SD, mean), by = c("subject", "activity")]
 # are for subjects and activities)
 setnames(tidy, names(tidy)[3:NROW(names(tidy))],
          paste0(names(tidy)[3:NROW(names(tidy))], "Avg"))
+
+# Done! Keep using the tidy object for further analysis...
